@@ -26,3 +26,27 @@ CREATE TABLE table_history
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
+
+INSERT INTO table_users(name)
+VALUES ('user008'), ('sa'), ('qwerty');
+
+INSERT INTO table_history(sender_id, receiver_id, message, date_send)
+VALUES ((SELECT id FROM table_users WHERE name = 'user008'),
+        (SELECT id FROM table_users WHERE name = 'sa'),
+        'test', '2024-01-27'),
+    ((SELECT id FROM table_users WHERE name = 'user008'),
+        (SELECT id FROM table_users WHERE name = 'sa'),
+        'test', '2024-01-27'),
+    ((SELECT id FROM table_users WHERE name = 'user008'),
+        (SELECT id FROM table_users WHERE name = 'sa'),
+        'test', '2024-01-27');
+INSERT INTO table_history(sender_id, receiver_id, message, reply_message_id, date_send)
+VALUES ((SELECT id FROM table_users WHERE name = 'qwerty'),
+        (SELECT id FROM table_users WHERE name = 'sa'),
+        'test', 1, '2024-01-27'),
+    ((SELECT id FROM table_users WHERE name = 'user008'),
+        (SELECT id FROM table_users WHERE name = 'qwerty'),
+        'test', 2, '2024-01-27'),
+    ((SELECT id FROM table_users WHERE name = 'qwerty'),
+        (SELECT id FROM table_users WHERE name = 'sa'),
+        'test', 1, '2024-01-27');
