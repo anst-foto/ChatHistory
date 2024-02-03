@@ -1,4 +1,4 @@
-﻿namespace ChatHistory.Core.Models;
+namespace ChatHistory.Core.Models;
 
 public record Message
 {

@@ -4,20 +4,17 @@ namespace ChatHistory.Core.Test;
 
 public class SqliteConfigTest
 {
-    private readonly SqliteConfig _sqliteConfig = new()
-    {
-        Path = "history.db"
-    };
+    private readonly SqliteConfig _sqliteConfig = new() { Path = "history.db" };
 
     [Fact]
     public void GetFromJsonTestPositive()
     {
-        var expected = _sqliteConfig;
+        var expected = this._sqliteConfig;
         var actual = SqliteConfig.GetFromJson();
-        
+
         Assert.Equal(expected, actual);
     }
-    
+
     [Fact]
     public void GetFromJsonTestNegative()
     {
@@ -28,15 +25,15 @@ public class SqliteConfigTest
     [Fact]
     public void ToConnectionStringTest()
     {
-        var expected = _sqliteConfig.ToConnectionString();
+        var expected = this._sqliteConfig.ToConnectionString();
         var actual = SqliteConfig.GetFromJson()!.ToConnectionString();
         Assert.Equal(expected, actual);
     }
-    
+
     [Fact]
     public void ToStringTest()
     {
-        var expected = _sqliteConfig.ToString();
+        var expected = this._sqliteConfig.ToString();
         var actual = SqliteConfig.GetFromJson()!.ToString();
         Assert.Equal(expected, actual);
     }

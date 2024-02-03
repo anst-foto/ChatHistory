@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using ChatHistory.Core.Config;
 
 namespace ChatHistory.Core.Context;
@@ -10,7 +10,7 @@ public abstract class DbContext
 
     protected DbContext(IDbConfig config, IDbConnection db)
     {
-        Config = config;
-        Db = db;
+        this.Config = config;
+        this.Db = db;
     }
 }

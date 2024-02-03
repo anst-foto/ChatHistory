@@ -1,4 +1,4 @@
-﻿using ChatHistory.Core.Config;
+using ChatHistory.Core.Config;
 using ChatHistory.Core.Models;
 using Dapper;
 using Microsoft.Data.Sqlite;
@@ -9,31 +9,11 @@ public class SqliteContext : DbContext, IDbContext
 {
     public SqliteContext() : base(new SqliteConfig(), new SqliteConnection())
     {
-        var connectionString = SqliteConfig.GetFromJson()?.ToString();
-        
-        if (connectionString is null) throw new NullReferenceException();
+        var connectionString = SqliteConfig.GetFromJson()?.ToString() ?? throw new NullReferenceException();
 
-        Db.ConnectionString = connectionString;
+        this.Db.ConnectionString = connectionString;
     }
 
-    private object? FindOne(string sql)
-    {
-        Db.Open();
-        var result = Db.QuerySingleOrDefault(sql);
-        Db.Close();
-
-        return result;
-    }
-    
-    private IEnumerable<object> FindAll(string sql)
-    {
-        Db.Open();
-        var result = Db.Query(sql);
-        Db.Close();
-
-        return result;
-    }
-    
     public User? GetUserById(int id)
     {
         /*Db.Open();
@@ -42,33 +22,51 @@ public class SqliteContext : DbContext, IDbContext
         Db.Close();
         return user;*/
         var sql = $"SELECT * FROM table_users WHERE id = {id}";
-        return FindOne(sql) as User;
+        return this.FindOne(sql) as User;
     }
 
     public IEnumerable<User>? GetUsersByName(string name)
     {
         var sql = $"SELECT * FROM table_users WHERE name = '{name}'";
-        var result = FindAll(sql);
+        var result = this.FindAll(sql);
         return !result.Any() ? null : result.Cast<User>();
     }
 
     public IEnumerable<User>? GetAllUsers()
     {
         var sql = "SELECT * FROM table_users";
-        var result = FindAll(sql);
+        var result = this.FindAll(sql);
         return !result.Any() ? null : result.Cast<User>();
     }
 
     public Message? GetMessageById(int id)
     {
         var sql = $"SELECT * FROM table_history WHERE id = {id}";
-        return FindOne(sql) as Message;
+        return this.FindOne(sql) as Message;
     }
 
     public IEnumerable<Message>? GetAllMessages()
     {
         var sql = "SELECT * FROM table_history";
-        var result = FindAll(sql);
+        var result = this.FindAll(sql);
         return !result.Any() ? null : result.Cast<Message>();
+    }
+
+    private object? FindOne(string sql)
+    {
+        this.Db.Open();
+        var result = this.Db.QuerySingleOrDefault(sql);
+        this.Db.Close();
+
+        return result;
+    }
+
+    private IEnumerable<object> FindAll(string sql)
+    {
+        this.Db.Open();
+        var result = this.Db.Query(sql);
+        this.Db.Close();
+
+        return result;
     }
 }

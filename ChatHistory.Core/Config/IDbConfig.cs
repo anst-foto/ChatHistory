@@ -1,4 +1,4 @@
-﻿namespace ChatHistory.Core.Config;
+namespace ChatHistory.Core.Config;
 
 public interface IDbConfig
 {
