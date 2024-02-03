@@ -5,10 +5,10 @@ namespace ChatHistory.Core.Context;
 
 public abstract class DbContext
 {
-    protected readonly IDbConfig Config;
+    protected readonly IDbConfig? Config;
     protected readonly IDbConnection Db;
 
-    protected DbContext(IDbConfig config, IDbConnection db)
+    protected DbContext(IDbConfig? config, IDbConnection db)
     {
         this.Config = config;
         this.Db = db;

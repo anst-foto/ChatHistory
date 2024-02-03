@@ -4,9 +4,17 @@ namespace ChatHistory.Core.Config;
 
 public class SqliteConfig : IDbConfig, IEquatable<SqliteConfig>
 {
-    public string Path { get; set; }
+    public string? Path { get; set; }
 
-    public string ToConnectionString() => $"Data Source={this.Path};";
+    public string ToConnectionString()
+    {
+        if (this.Path is null)
+        {
+            throw new ConfigException($"{nameof(this.Path)} is null");
+        }
+
+        return $"Data Source={this.Path};";
+    }
 
     public bool Equals(SqliteConfig? other)
     {
