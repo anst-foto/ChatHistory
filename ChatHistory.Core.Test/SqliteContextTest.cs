@@ -6,58 +6,58 @@ namespace ChatHistory.Core.Test;
 
 public class SqliteContextTest
 {
-    private readonly SqliteContext _context;
-    private readonly List<User> _users;
-    private readonly List<Message> _messages;
+    private readonly SqliteContext context;
+    private readonly List<User> users;
+    private readonly List<Message> messages;
 
     public SqliteContextTest()
     {
-        this._context = new SqliteContext();
-        this._users = new List<User>()
+        this.context = new SqliteContext();
+        this.users = new List<User>()
         {
             new() { Id = 1, Name = "user008", IsDelete = false },
             new() { Id = 2, Name = "sa", IsDelete = false },
             new() { Id = 3, Name = "qwerty", IsDelete = false }
         };
 
-        this._messages = new List<Message>()
+        this.messages = new List<Message>()
         {
-            new() {Id = 1, Sender = this._users[0], Receiver = this._users[1], MessageText = "test", ReplyMessage = null, DateSend = new DateTime(2024, 1, 27), IsReceive = false, IsRead = false, IsDelete = false},
-            new() {Id = 2, Sender = this._users[0], Receiver = this._users[1], MessageText = "test", ReplyMessage = null, DateSend = new DateTime(2024, 1, 27), IsReceive = false, IsRead = false, IsDelete = false},
-            new() {Id = 3, Sender = this._users[0], Receiver = this._users[1], MessageText = "test", ReplyMessage = null, DateSend = new DateTime(2024, 1, 27), IsReceive = false, IsRead = false, IsDelete = false}
+            new() {Id = 1, Sender = this.users[0], Receiver = this.users[1], MessageText = "test", ReplyMessage = null, DateSend = new DateTime(2024, 1, 27, 0,0,0, DateTimeKind.Utc), IsReceive = false, IsRead = false, IsDelete = false},
+            new() {Id = 2, Sender = this.users[0], Receiver = this.users[1], MessageText = "test", ReplyMessage = null, DateSend = new DateTime(2024, 1, 27, 0,0,0, DateTimeKind.Utc), IsReceive = false, IsRead = false, IsDelete = false},
+            new() {Id = 3, Sender = this.users[0], Receiver = this.users[1], MessageText = "test", ReplyMessage = null, DateSend = new DateTime(2024, 1, 27, 0,0,0, DateTimeKind.Utc), IsReceive = false, IsRead = false, IsDelete = false}
         };
-        this._messages.Add(new Message
+        this.messages.Add(new Message
         {
             Id = 4,
-            Sender = this._users[2],
-            Receiver = this._users[1],
+            Sender = this.users[2],
+            Receiver = this.users[1],
             MessageText = "test",
-            ReplyMessage = this._messages[0],
-            DateSend = new DateTime(2024, 1, 27),
+            ReplyMessage = this.messages[0],
+            DateSend = new DateTime(2024, 1, 27, 0,0,0, DateTimeKind.Utc),
             IsReceive = false,
             IsRead = false,
             IsDelete = false
         });
-        this._messages.Add(new Message
+        this.messages.Add(new Message
         {
             Id = 5,
-            Sender = this._users[0],
-            Receiver = this._users[2],
+            Sender = this.users[0],
+            Receiver = this.users[2],
             MessageText = "test",
-            ReplyMessage = this._messages[1],
-            DateSend = new DateTime(2024, 1, 27),
+            ReplyMessage = this.messages[1],
+            DateSend = new DateTime(2024, 1, 27, 0,0,0, DateTimeKind.Utc),
             IsReceive = false,
             IsRead = false,
             IsDelete = false
         });
-        this._messages.Add(new Message
+        this.messages.Add(new Message
         {
             Id = 6,
-            Sender = this._users[2],
-            Receiver = this._users[1],
+            Sender = this.users[2],
+            Receiver = this.users[1],
             MessageText = "test",
-            ReplyMessage = this._messages[0],
-            DateSend = new DateTime(2024, 1, 27),
+            ReplyMessage = this.messages[0],
+            DateSend = new DateTime(2024, 1, 27, 0,0,0, DateTimeKind.Utc),
             IsReceive = false,
             IsRead = false,
             IsDelete = false
@@ -68,13 +68,13 @@ public class SqliteContextTest
     public void SqliteContextConstructorTestException() =>
         Assert.Throws<ConfigException>(() =>
         {
-            var _ = new SqliteContext("db_config_bad.json");
+            new SqliteContext("db_config_bad.json");
         } );
 
     [Fact]
     public void SqliteContextConstructorTest()
     {
-        var expected = this._context;
+        var expected = this.context;
         var actual = new SqliteContext();
         Assert.NotEqual(expected, actual);
     }
@@ -82,61 +82,62 @@ public class SqliteContextTest
     [Fact]
     public void GetUserByIdTest()
     {
-        var expected = this._users[0];
-        var actual = this._context.GetUserById(1)!;
+        var expected = this.users[0];
+        var actual = this.context.GetUserById(1)!;
         Assert.Equal(expected, actual);
     }
 
     [Fact]
     public void GetUserByIdTestNegative()
     {
-        var actual = this._context.GetUserById(1000);
+        var actual = this.context.GetUserById(1000);
         Assert.Null(actual);
     }
 
     [Fact]
     public void GetUsersByNameTest()
     {
-        var expected = this._users.Where(u => u.Name == "user008");
-        var actual = this._context.GetUsersByName("user008")!;
+        var expected = this.users.Where(u => u.Name == "user008");
+        var actual = this.context.GetUsersByName("user008")!;
         Assert.Equal(expected, actual);
     }
 
     [Fact]
     public void GetUsersByNameTestNegative()
     {
-        var actual = this._context.GetUsersByName("");
+        var actual = this.context.GetUsersByName("");
         Assert.Null(actual);
     }
 
     [Fact]
     public void GetAllUsersTest()
     {
-        var expected = this._users;
-        var actual = this._context.GetAllUsers()!.ToList();
+        var expected = this.users;
+        var actual = this.context.GetAllUsers()!.ToList();
         Assert.Equal(expected, actual);
     }
 
     [Fact]
     public void GetMessageByIdTest()
     {
-        var expected = this._messages[0];
-        var actual = this._context.GetMessageById(1)!;
+        var expected = this.messages[0];
+        var actual = this.context.GetMessageById(1)!;
         Assert.Equal(expected, actual);
     }
 
     [Fact]
     public void GetMessageByIdTestNegative()
     {
-        var actual = this._context.GetMessageById(1000);
+        var actual = this.context.GetMessageById(1000);
         Assert.Null(actual);
     }
 
     [Fact]
     public void GetAllMessagesTest()
     {
-        var expected = this._messages;
-        var actual = this._context.GetAllMessages()!.ToList();
+        var expected = this.messages;
+        var actual = this.context.GetAllMessages()!.ToList();
         Assert.Equal(expected, actual);
     }
+
 }
