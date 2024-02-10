@@ -74,9 +74,8 @@ public class SqliteContextTest
     [Fact]
     public void SqliteContextConstructorTest()
     {
-        var expected = this.context;
         var actual = new SqliteContext();
-        Assert.NotEqual(expected, actual);
+        Assert.NotEqual(this.context, actual);
     }
 
     [Fact]
@@ -112,9 +111,8 @@ public class SqliteContextTest
     [Fact]
     public void GetAllUsersTest()
     {
-        var expected = this.users;
         var actual = this.context.GetAllUsers()!.ToList();
-        Assert.Equal(expected, actual);
+        Assert.Equal(this.users, actual);
     }
 
     [Fact]
@@ -135,9 +133,8 @@ public class SqliteContextTest
     [Fact]
     public void GetAllMessagesTest()
     {
-        var expected = this.messages;
         var actual = this.context.GetAllMessages()!.ToList();
-        Assert.Equal(expected, actual);
+        Assert.Equal(this.messages, actual!);
     }
 
 }

@@ -1,3 +1,4 @@
+using System.Globalization;
 using ChatHistory.Core.Config;
 using ChatHistory.Core.Models;
 using Dapper;
@@ -15,9 +16,10 @@ public class SqliteContext : DbContext, IDbContext
 
     public User? GetUserById(int id)
     {
-        var sql = $"SELECT * FROM table_users WHERE id = {id}";
+        var parameters = new { Id = id };
+        const string sql = "SELECT * FROM table_users WHERE id = @Id";
         this.Db.Open();
-        var result = this.Db.QuerySingleOrDefault<User>(sql);
+        var result = this.Db.QuerySingleOrDefault<User>(sql, parameters);
         this.Db.Close();
 
         return result;
@@ -25,9 +27,10 @@ public class SqliteContext : DbContext, IDbContext
 
     public IEnumerable<User>? GetUsersByName(string name)
     {
-        var sql = $"SELECT * FROM table_users WHERE name = '{name}'";
+        var parameters = new { Name = name };
+        const string sql = "SELECT * FROM table_users WHERE name = @Name";
         this.Db.Open();
-        var result = this.Db.Query<User>(sql);
+        var result = this.Db.Query<User>(sql, parameters);
         this.Db.Close();
 
         return result.Any() ? result : null;
@@ -35,7 +38,7 @@ public class SqliteContext : DbContext, IDbContext
 
     public IEnumerable<User>? GetAllUsers()
     {
-        var sql = "SELECT * FROM table_users";
+        const string sql = "SELECT * FROM table_users";
         this.Db.Open();
         var result = this.Db.Query<User>(sql);
         this.Db.Close();
@@ -45,9 +48,10 @@ public class SqliteContext : DbContext, IDbContext
 
     public Message? GetMessageById(int id)
     {
-        var sql = $"SELECT * FROM table_history WHERE id = {id}";
+        var parameters = new { Id = id };
+        const string sql = $"SELECT * FROM table_history WHERE id = @Id";
         this.Db.Open();
-        var result = this.Db.QuerySingleOrDefault(sql);
+        var result = this.Db.QuerySingleOrDefault(sql, parameters);
         this.Db.Close();
 
         if (result is null)
@@ -60,7 +64,7 @@ public class SqliteContext : DbContext, IDbContext
         var replyMessage = (int?)result.reply_message_id is null
             ? null
             : this.GetMessageById((int)result.reply_message_id);
-        var dateSend = DateTime.Parse((string)result.date_send);
+        var dateSend = DateTime.Parse((string)result.date_send, CultureInfo.InvariantCulture);
         var isReceive = (int)result.is_receive != 0;
         var isRead = (int)result.is_read != 0;
         var isDelete = (int)result.is_delete != 0;
@@ -79,9 +83,9 @@ public class SqliteContext : DbContext, IDbContext
         };
     }
 
-    public IEnumerable<Message>? GetAllMessages()
+    public IEnumerable<Message?>? GetAllMessages()
     {
-        var sql = "SELECT id FROM table_history";
+        const string sql = "SELECT id FROM table_history";
         this.Db.Open();
         var result = this.Db.Query(sql);
         this.Db.Close();

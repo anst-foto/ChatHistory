@@ -9,5 +9,5 @@ public interface IDbContext
     public IEnumerable<User>? GetAllUsers();
 
     public Message? GetMessageById(int id);
-    public IEnumerable<Message>? GetAllMessages();
+    public IEnumerable<Message?>? GetAllMessages();
 }

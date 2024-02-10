@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace ChatHistory.Core.Config;
 
-public class SqliteConfig : IDbConfig, IEquatable<SqliteConfig>
+public sealed class SqliteConfig : IDbConfig, IEquatable<SqliteConfig>
 {
     public string? Path { get; set; }
 
@@ -14,21 +14,6 @@ public class SqliteConfig : IDbConfig, IEquatable<SqliteConfig>
         }
 
         return $"Data Source={this.Path};";
-    }
-
-    public bool Equals(SqliteConfig? other)
-    {
-        if (other is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, other))
-        {
-            return true;
-        }
-
-        return this.Path == other.Path;
     }
 
     public override string ToString() => this.ToConnectionString();
@@ -44,6 +29,21 @@ public class SqliteConfig : IDbConfig, IEquatable<SqliteConfig>
         {
             return null;
         }
+    }
+
+    public bool Equals(SqliteConfig? other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+
+        return this.Path == other.Path;
     }
 
     public override bool Equals(object? obj)
@@ -66,7 +66,7 @@ public class SqliteConfig : IDbConfig, IEquatable<SqliteConfig>
         return this.Equals((SqliteConfig)obj);
     }
 
-    public override int GetHashCode() => this.Path.GetHashCode();
+    public override int GetHashCode() => this.Path?.GetHashCode() ?? 0;
 
     public static bool operator ==(SqliteConfig? left, SqliteConfig? right) => Equals(left, right);
 
