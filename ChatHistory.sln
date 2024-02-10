@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatHistory.Core", "ChatHis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatHistory.Core.Test", "ChatHistory.Core.Test\ChatHistory.Core.Test.csproj", "{5B6E99C5-FE32-4BF9-9500-C4566C241EDB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatHistory.UI", "ChatHistory.UI\ChatHistory.UI.csproj", "{A3313A8A-BD6B-4264-962E-79B89D67B0FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{5B6E99C5-FE32-4BF9-9500-C4566C241EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B6E99C5-FE32-4BF9-9500-C4566C241EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B6E99C5-FE32-4BF9-9500-C4566C241EDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3313A8A-BD6B-4264-962E-79B89D67B0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3313A8A-BD6B-4264-962E-79B89D67B0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3313A8A-BD6B-4264-962E-79B89D67B0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3313A8A-BD6B-4264-962E-79B89D67B0FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

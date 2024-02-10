@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ChatHistory.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ChatHistory.UI.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{StaticResource AppTitle}">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="*, 2*">
+        <ListBox Grid.Column="0"
+                 ItemsSource="{Binding Path=Users}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*,2*">
+                        <TextBlock Grid.Column="0" Text="{Binding Id}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListBox Grid.Column="1"
+                 x:Name="MessageList"
+                 ItemsSource="{Binding Messages}"
+                 SelectedItem="{Binding SelectedMessage}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Classes="Shadow"
+                            Theme="{StaticResource CardBorder}">
+                        <Grid RowDefinitions="*,Auto,Auto">
+                            <!--<TextBlock Grid.Row="0">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} -> {1}">
+                                        <Binding Path="Sender.Name"/>
+                                        <Binding Path="Receiver.Name"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>-->
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <Button Content="{Binding Path=Sender.Name}"
+                                        Classes="Primary" Theme="{DynamicResource BorderlessButton}"
+                                        Click="ButtonUserInfo_OnClick"/>
+                                <TextBlock Text=" -> "/>
+                                <Button Content="{Binding Path=Receiver.Name}"
+                                        Classes="Secondary" Theme="{DynamicResource BorderlessButton}"
+                                        Click="ButtonUserInfo_OnClick"/>
+                            </StackPanel>
+
+                            <Border Grid.Row="1"
+                                    Classes="Hover" Theme="{StaticResource CardBorder}">
+                                <TextBlock Text="{Binding ReplyMessage.MessageText}"/>
+                            </Border>
+
+                            <TextBlock Grid.Row="2"
+                                       Text="{Binding MessageText}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+
+</Window>
