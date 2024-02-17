@@ -8,7 +8,6 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="{StaticResource AppTitle}">
-
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
@@ -46,11 +45,13 @@
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <Button Content="{Binding Path=Sender.Name}"
                                         Classes="Primary" Theme="{DynamicResource BorderlessButton}"
-                                        Click="ButtonUserInfo_OnClick"/>
+                                        Command="{Binding Path=$parent[Window].((vm:MainWindowViewModel)DataContext).CommandUserInfo}"
+                                        CommandParameter="sender"/>
                                 <TextBlock Text=" -> "/>
                                 <Button Content="{Binding Path=Receiver.Name}"
                                         Classes="Secondary" Theme="{DynamicResource BorderlessButton}"
-                                        Click="ButtonUserInfo_OnClick"/>
+                                        Command="{Binding Path=$parent[Window].((vm:MainWindowViewModel)DataContext).CommandUserInfo}"
+                                        CommandParameter="receiver"/>
                             </StackPanel>
 
                             <Border Grid.Row="1"
@@ -64,7 +65,12 @@
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem:pressed">
+                    <Setter Property="Background" Value="Red"/>
+                    <Setter Property="IsSelected" Value="True"/>
+                </Style>
+            </ListBox.Styles>
         </ListBox>
     </Grid>
-
 </Window>

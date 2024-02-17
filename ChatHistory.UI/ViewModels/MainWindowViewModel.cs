@@ -24,8 +24,7 @@ public class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref this.selectedMessage, value);
     }
 
-
-    public  ReactiveCommand<Unit, Unit> CommandUserInfo { get; }
+    public  ReactiveCommand<string, Unit> CommandUserInfo { get; }
 
     public MainWindowViewModel()
     {
@@ -44,10 +43,11 @@ public class MainWindowViewModel : ViewModelBase
             if (result == ButtonResult.Abort) Environment.Exit(1);
         }
 
-        this.CommandUserInfo = ReactiveCommand.Create(
-            execute: () =>
+        this.CommandUserInfo = ReactiveCommand.Create<string>(
+            execute: (s) =>
             {
-                MessageBoxManager.GetMessageBoxStandard("!!! Info !!!", $"User: {SelectedMessage.Sender.Name}").ShowAsync();
+                var user = s == "sender" ? this.SelectedMessage.Sender?.Name : this.SelectedMessage.Receiver?.Name;
+                MessageBoxManager.GetMessageBoxStandard("!!! Info !!!", $"User: {user}").ShowAsync();
             });
     }
 }
